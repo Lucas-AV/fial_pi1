@@ -234,61 +234,90 @@ class _DesktopPageState extends State<DesktopPage> {
 
 
   Widget sensorCard({String title = "Sensores de fumaça", IconData icon = Icons.sensors}){
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 16),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
-              BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 5,
-                  offset: Offset(0,3)
-              )
-            ]
-        ),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Icon(icon,size: 64,),
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 16),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: const [
+                  BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 5,
+                      offset: Offset(0,3)
+                  )
+                ]
             ),
-            Expanded(
-              child: SizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Icon(icon,size: 64,),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
 
-                      SizedBox(
-                        height: 30,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: FittedBox(alignment: Alignment.centerLeft,child: Text(title,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold))),
-                        ),
-                      ),
-
-                      Expanded(
-                        child: SizedBox(
-                          child: SingleChildScrollView(
+                          SizedBox(
+                            height: 30,
+                            width: double.infinity,
                             child: Padding(
-                              padding: const EdgeInsets.only(right: 24),
-                              child: Text(template,textAlign: TextAlign.justify,style: TextStyle(color: Colors.black)),
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: FittedBox(alignment: Alignment.centerLeft,child: Text(title,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold))),
                             ),
                           ),
-                        ),
+
+                          Expanded(
+                            child: SizedBox(
+                              child: SingleChildScrollView(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 24),
+                                  child: Text(template,textAlign: TextAlign.justify,style: TextStyle(color: Colors.black)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: GestureDetector(
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: Container(
+                  height: 35,
+                  width: 35,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Colors.black38,
+                            offset: Offset(0,3),
+                            blurRadius: 3
+                        )
+                      ]
+                  ),
+                  child: const Icon(Icons.add,size: 32)
               ),
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -499,30 +528,31 @@ class _DesktopPageState extends State<DesktopPage> {
                       sensorCard(title: "Sensores de temperatura",icon: Icons.thermostat_outlined),
                       sensorCard(title: "Luzes de emergência",icon: MdiIcons.lightbulbOnOutline),
                       sensorCard(title: "Fechaduras magnéticas",icon: Icons.lock_outline),
+                      sensorCard(title: "Transmissores",icon: MdiIcons.cpu32Bit),
                     ],
-                    bottomButton: Row(
-                      children: [
-                        RawMaterialButton(
-                          onPressed: (){},
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(7.5),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 2),
-                            child: Center(child: Text("Realizar\ncheckup",textAlign: TextAlign.center,style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24))),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // bottomButton: Row(
+                    //   children: [
+                    //     RawMaterialButton(
+                    //       onPressed: (){},
+                    //       child: Container(
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.white,
+                    //           borderRadius: BorderRadius.circular(7.5),
+                    //         ),
+                    //         padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 2),
+                    //         child: const Center(child: Text("Detalhar\nsensores",textAlign: TextAlign.center,style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24))),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ),
                   sector(title: "Relatórios",underlineWidth: 250,
                     children: [
                       relatoriosCard(title:"Relatório diário",date: "19/06/2023"),
-                      relatoriosCard(title:"Relatório semanal",date: "18/06/2023"),
-                      relatoriosCard(title:"Relatório semanal",date: "11/06/2023"),
-                      relatoriosCard(title:"Relatório semanal",date: "04/06/2023"),
-                      relatoriosCard(title:"Relatório semanal",date: "28/05/2023"),
+                      relatoriosCard(title:"Relatório diário",date: "18/06/2023"),
+                      relatoriosCard(title:"Relatório diário",date: "11/06/2023"),
+                      relatoriosCard(title:"Relatório diário",date: "04/06/2023"),
+                      relatoriosCard(title:"Relatório diário",date: "28/05/2023"),
                     ],
                     bottomButton: Row(
                       children: [
@@ -534,7 +564,7 @@ class _DesktopPageState extends State<DesktopPage> {
                               borderRadius: BorderRadius.circular(7.5),
                             ),
                             padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 2),
-                            child: Center(child: Text("Gerar\nrelatório",textAlign: TextAlign.center,style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24))),
+                            child: Center(child: Text("Visualizar\nhistórico",textAlign: TextAlign.center,style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24))),
                           ),
                         ),
                       ],

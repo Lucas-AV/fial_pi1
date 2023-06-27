@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "FIAL",
-      home: Platform.isAndroid? LoginPage():DesktopPage(),// LoginPage(),
+      home: LoginPage(),
     );
   }
 }

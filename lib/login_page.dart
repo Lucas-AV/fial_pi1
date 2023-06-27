@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'home_page.dart';
-
+import 'desktop.dart';
+import 'dart:io';
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -77,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: GestureDetector(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => kIsWeb? const DesktopPage() : Platform.isAndroid? const HomePage(): const DesktopPage()));
                       },
                       child: Container(
                         width: 120,
@@ -92,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                               )
                             ]
                         ),
-                        child: Center(child: Text("Login",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 24))),
+                        child: const Center(child: Text("Login",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 24))),
                       ),
                     ),
                   ),
