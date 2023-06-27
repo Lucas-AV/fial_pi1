@@ -9,8 +9,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String alertMsg = "ATENÇÃO: Mantenha a calma e siga imediatamente as orientações de evacuação. Dirija-se a saída de emergência mais próxima evitando o uso de elevadores, não retorne ao edifício até receber autorização das autoridades competentes, priorize a sua segurança e a dos demais.";
-  String warnMsg = "Manutenção nos elevadores programada para as 19h do dia 27/06 até as 22h.";
 
   int index = 0;
   List<Contact> contatos = [
@@ -29,8 +27,14 @@ class _HomePageState extends State<HomePage> {
   List<Address> exemplos = [
     Address()
       ..nome = "Residencial Boa Vista"
-      ..inAlarm = true
-      ..avisos = [""],
+      ..avisos = [
+        Aviso(
+          'Alerta de incêndio',
+          alertMsg,
+          Icons.warning_rounded,
+        ),
+        Aviso("Manutenção", "Manutenção nos elevadores programada para as 19h do dia 27/06 até as 22h.", Icons.settings)
+      ],
 
     Address()
       ..nome = "Residencial Via Boulevard"
@@ -125,14 +129,14 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-  Widget cardWidget({IconData icon = Icons.person, String title = "", String details = ""}){
+  Widget cardWidget(Aviso aviso){
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(
           width: 20,
         ),
-        Icon(icon,color: Colors.white,size: 48),
+        Icon(aviso.icon,color: Colors.white,size: 48),
         const SizedBox(width: 12),
         Expanded(
           child: Padding(
@@ -141,8 +145,8 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(title,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 22)),
-                Text(details,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w500),textAlign: TextAlign.justify),
+                Text(aviso.title,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 22)),
+                Text(aviso.details,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w500),textAlign: TextAlign.justify),
               ],
             ),
           ),
@@ -174,10 +178,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    String tripleVerify(){
+      String mode = "";
+      for(Aviso aviso in exemplos[index].avisos){
+        if(getMode(aviso).isNotEmpty){
+          mode = getMode(aviso);
+          break;
+        }
+      }
+      return mode;
+    }
+
+    exemplos[index].inAlarm = exemplos[index].avisos.any((aviso) => getMode(aviso).isNotEmpty);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: !exemplos[index].inAlarm? Colors.blue:Colors.deepOrange,
+          backgroundColor: !exemplos[index].inAlarm? Colors.blue:gradients[tripleVerify()]!.first,//Colors.deepOrange,
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: LayoutBuilder(
@@ -239,7 +255,7 @@ class _HomePageState extends State<HomePage> {
                 Colors.blue,
                 Colors.lightBlue,
                 Colors.lightBlueAccent,
-              ] : [
+              ] : gradients[tripleVerify()]?? [
                 Colors.deepOrange,
                 Colors.red,
                 Colors.redAccent,
@@ -261,10 +277,12 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: iconDivisor(divisor: "Avisos",height: 2.5),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: cardWidget(icon: Icons.settings,title: "Manutenção do elevador",details: warnMsg),
-                      ),
+                      for(Aviso aviso in exemplos[index].avisos)
+                        if(aviso.title != 'Alerta de incêndio')
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: cardWidget(aviso),
+                        ),
                     ],
                   ),
 
